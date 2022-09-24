@@ -50,7 +50,13 @@ export class HeroeService {
     }
 
     async getHeroe(id: string) {
-        return await this.heroesModel.findById(id);
+        try {
+            return await this.heroesModel.findById(id);
+        } catch (error) {
+            console.log(error);
+
+        }
+
     }
 
     async getUpdate(id: string, dataHeroe: IHeroes): Promise<IHeroesResponse | IError> {
