@@ -45,38 +45,57 @@ export class HeroeService {
         };
     }
 
-    async getHeroes() {
-        return await this.heroesModel.find();
+    async getHeroes(): Promise<IHeroes[] | IError> {
+        try {
+            return await this.heroesModel.find();
+        } catch (error) {
+            return {
+                textCode: 'Sucedio un Error al consultar los Heroes',
+                httpCode: HttpStatus.BAD_REQUEST
+            }
+        }
     }
 
-    async getHeroe(id: string) {
+    async getHeroe(id: string): Promise<IHeroes | IError> {
         try {
             return await this.heroesModel.findById(id);
         } catch (error) {
-            console.log(error);
-
+            return {
+                textCode: 'Heroe no encontrado ',
+                httpCode: HttpStatus.BAD_REQUEST,
+            };
         }
-
     }
 
-    async getUpdate(id: string, dataHeroe: IHeroes): Promise<IHeroesResponse | IError> {
-        const { _id, ...newData } = dataHeroe
-        const { exists } = await this.getOneHeroe(id)
+    async getUpdate(
+        id: string,
+        dataHeroe: IHeroes,
+    ): Promise<IHeroesResponse | IError> {
+        const { _id, ...newData } = dataHeroe;
+        const { exists } = await this.getOneHeroe(id);
         if (exists) {
             try {
-                const result = await this.heroesModel.updateOne({ _id: id, },
+                const result = await this.heroesModel.updateOne(
+                    { _id: id },
                     {
-                        ...newData
-                    });
-                return { statusText: `se actualizo el heroe: ${newData.nombreHeroe}`, httpCode: HttpStatus.OK }
+                        ...newData,
+                    },
+                );
+                return {
+                    statusText: `se actualizo el heroe: ${newData.nombreHeroe}`,
+                    httpCode: HttpStatus.OK,
+                };
             } catch (error) {
                 return {
                     textCode: 'Sucedio Un Error',
-                    httpCode: HttpStatus.BAD_REQUEST
-                }
+                    httpCode: HttpStatus.BAD_REQUEST,
+                };
             }
         }
-        return { textCode: `el heroe con el id: ${id} no existe`, httpCode: HttpStatus.NOT_FOUND }
+        return {
+            textCode: `el heroe con el id: ${id} no existe`,
+            httpCode: HttpStatus.NOT_FOUND,
+        };
     }
 
     async getOneHeroe(id: string): Promise<IsearchId> {
@@ -87,7 +106,7 @@ export class HeroeService {
                 exists: true,
             };
         } catch (error) {
-            return { exists: false }
+            return { exists: false };
         }
     }
 }
