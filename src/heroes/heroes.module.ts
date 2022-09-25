@@ -4,15 +4,16 @@ import { heroeSchema } from 'src/Schemas/heroes.schema';
 import { HeroeService } from 'src/Services/heroe-service/heroe.service';
 import { HeroesController } from './heroes.controller';
 
-
 @Module({
-    imports: [MongooseModule.forFeature([{
+  imports: [
+    MongooseModule.forFeature([
+      {
         name: 'Heroes',
-        schema: heroeSchema
-    }])],
-    controllers: [HeroesController],
-    providers: [HeroeService],
+        schema: heroeSchema,
+      },
+    ]),
+  ],
+  controllers: [HeroesController],
+  providers: [HeroeService],
 })
-export class HeroesModule {
-
-}
+export class HeroesModule {}
