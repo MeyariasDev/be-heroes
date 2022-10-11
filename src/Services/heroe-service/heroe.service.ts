@@ -108,4 +108,15 @@ export class HeroeService {
       return { exists: false };
     }
   }
+
+  async getNameHeroe(name: string): Promise<IsearchId> {
+    try {
+      return  {response: await this.heroesModel.find({  nombreHeroe: name }), exists:true}
+    } catch (error) {
+      return {
+       exists:false
+      }
+    }
+  }
+
 }

@@ -8,6 +8,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { IHeroes } from 'src/Interface/IHeroes';
+import { HttpStatus } from '@nestjs/common';
 import {
   HeroeService,
   IError,
@@ -34,6 +35,15 @@ export class HeroesController {
     console.log(id, 'Aqui Controller');
 
     return this.heroeService.getHeroe(id);
+  }
+
+  @Get('search/:name')
+  async nameHeroes(@Response() response, @Param('name') name: string) {
+    const data = await this.heroeService.getNameHeroe(name);
+    if(data.exists){
+     return response.status(HttpStatus.OK).send(data.response);
+    }
+    return response.status(HttpStatus.BAD_REQUEST).send(`No se encontraron heroes con el nombre: ${name}`);
   }
 
   @Put(':id')

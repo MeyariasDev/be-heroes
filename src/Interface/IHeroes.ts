@@ -9,6 +9,7 @@ export interface IHeroes {
   colaboradores: string[];
   enemigo: string[];
   img: string[];
+  superPoder: string[];
 }
 
 interface IBio {

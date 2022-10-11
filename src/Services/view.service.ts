@@ -52,7 +52,7 @@ export class ViewsService {
   async getViewIndex(): Promise<Isearch> {
     try {
       return {
-        response: await this.viewModel.findOne({ nombreView: 'index' }),
+        response: await this.viewModel.findOne({ nombreView: 'index2' }),
         exists: true,
       };
     } catch (error) {
