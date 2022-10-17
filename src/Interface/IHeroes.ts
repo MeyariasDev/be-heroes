@@ -8,10 +8,16 @@ export interface IHeroes {
   apariencia: IApariencia;
   colaboradores: string[];
   enemigo: string[];
-  img: string[];
+  img: Iimg[];
   superPoder: string[];
 }
 
+interface Iimg {
+  path: string;
+  link: string;
+  resurce: string;
+
+}
 interface IBio {
   fechaPublicacion: Date;
   lugarNacimiento: string;
