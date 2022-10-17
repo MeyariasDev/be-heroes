@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { IHeroes } from 'src/Interface/IHeroes';
 import { HttpStatus } from '@nestjs/common';
+import { extractionError } from 'src/Utilidades/ExtractionError';
 
 export interface IHeroesResponse {
   statusText: string;
@@ -24,24 +25,18 @@ export class HeroeService {
   constructor(@InjectModel('Heroes') private heroesModel: Model<IHeroes>) {}
 
   async createHeroes(body: IHeroes): Promise<IHeroesResponse | IError> {
-    if (body.nombreHeroe != '') {
       try {
         await new this.heroesModel(body).save();
         return {
           statusText: `Se ha guardado con exito! Creado heroes: ${body.nombreHeroe}`,
           httpCode: HttpStatus.OK,
         };
-      } catch (error) {
+      } catch (e) {
         return {
-          statusText: `ha sucedido un error al guardar el heroe`,
+          statusText: extractionError(e),
           httpCode: HttpStatus.BAD_REQUEST,
         };
       }
-    }
-    return {
-      textCode: 'Error al guardar los datos, propiedades requeridas',
-      httpCode: HttpStatus.BAD_REQUEST,
-    };
   }
 
   async getHeroes(): Promise<IHeroes[] | IError> {
